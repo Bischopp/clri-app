@@ -10,8 +10,11 @@ import 'package:image/image.dart' as img;
 import 'package:path/path.dart';
 import 'package:camera/camera.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:project/camera_page.dart';
+import 'package:project/camera_page2.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MaterialApp(
     home: Home(),
   ));
@@ -26,7 +29,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   File? imageFile;
-  String? _imagePath;
+  File? imageFile2;
 
   @override
   Widget build(BuildContext context) {
@@ -52,16 +55,9 @@ class _HomeState extends State<Home> {
                 const SizedBox(width: 20),
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: getImageFromCamera,
+                    onPressed: () => getImage2(source: ImageSource.camera),
                     child: const Text('Capture Cross Section',
                         style: TextStyle(fontSize: 18)),
-                  ),
-                ),
-                const SizedBox(width: 20),
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: saveImagesToGallery,
-                    child: const Text('Save', style: TextStyle(fontSize: 18)),
                   ),
                 ),
               ],
@@ -71,26 +67,118 @@ class _HomeState extends State<Home> {
       ),
     );
   }
+/*
+  void _takePhoto() async {
+    ImagePicker.pickImage(source: ImageSource.camera)
+        .then((File recordedImage) {
+      if (recordedImage != null && recordedImage.path != null) {
+        setState(() {
+          //firstButtonText = 'saving in progress...';
+        });
+        GallerySaver.saveImage(recordedImage.path).then((String path) {
+          setState(() {
+            firstButtonText = 'image saved!';
+          });
+        });
+      }
+    });
+  }
+*/
 
   Future<void> getImage({required ImageSource source}) async {
-    final permissionStatus = await Permission.camera.request();
-    if (permissionStatus.isGranted) {
-      final file = await ImagePicker().pickImage(source: source);
-      if (file != null) {
+    final permissionStatus = true;
+    if (permissionStatus) {
+      final camera = await availableCameras();
+      final firstCamera = camera.first;
+      /*var file =*/
+      await Navigator.push(
+        this.context,
+        MaterialPageRoute(
+          builder: (context) => CameraPage(camera: firstCamera),
+        ),
+      );
+      /*if (file != null) {
         setState(() {
           imageFile = File(file.path);
         });
+      }*/
+      /*if (imageFile2 != null && imageFile != null) {
+        try {
+          // Save the first image (_imagePath) to gallery
+          await GallerySaver.saveImage(imageFile2!.path, albumName: "cross");
+
+          // Save the second image (imageFile) to gallery
+          await GallerySaver.saveImage(imageFile!.path, albumName: "grain");
+
+          setState(() {
+            imageFile = null;
+          });
+          setState(() {
+            imageFile2 = null;
+          });
+
+          print('Images saved to gallery successfully.');
+        } catch (e) {
+          print('Error saving images: $e');
+        }
+      } else {
+        print('One or both images are null. Cannot save to gallery.');
+      }*/
+    } else {
+      print('Camera permission denied');
+    }
+  }
+
+  Future<void> getImage2({required ImageSource source}) async {
+    final permissionStatus = true;
+    if (permissionStatus) {
+      final camera = await availableCameras();
+      final firstCamera = camera.first;
+
+      /*var file = */
+      await Navigator.push(
+        this.context,
+        MaterialPageRoute(
+          builder: (context) => CameraPage2(camera: firstCamera),
+        ),
+      );
+      /*if (file != null) {
+        setState(() {
+          imageFile2 = File(file.path);
+        });
       }
+      if (imageFile2 != null && imageFile != null) {
+        try {
+          // Save the first image (_imagePath) to gallery
+          await GallerySaver.saveImage(imageFile2!.path, albumName: "cross");
+
+          // Save the second image (imageFile) to gallery
+          await GallerySaver.saveImage(imageFile!.path, albumName: "grain");
+
+          setState(() {
+            imageFile = null;
+          });
+          setState(() {
+            imageFile2 = null;
+          });
+
+          print('Images saved to gallery successfully.');
+        } catch (e) {
+          print('Error saving images: $e');
+        }
+      } else {
+        print('One or both images are null. Cannot save to gallery.');
+      }*/
     } else {
       print('Camera permission denied');
     }
   }
 
   Future<void> saveImagesToGallery() async {
-    if (_imagePath != null && imageFile != null) {
+    if (imageFile2 != null && imageFile != null) {
       try {
         // Save the first image (_imagePath) to gallery
-        await GallerySaver.saveImage(_imagePath!, albumName: "cross");
+        await GallerySaver.saveImage(imageFile2!.path, albumName: "cross");
 
         // Save the second image (imageFile) to gallery
         await GallerySaver.saveImage(imageFile!.path, albumName: "grain");
@@ -104,7 +192,7 @@ class _HomeState extends State<Home> {
     }
   }
 
-  Future<void> getImageFromCamera() async {
+  /*Future<void> getImageFromCamera() async {
     bool isCameraGranted = await Permission.camera.request().isGranted;
     if (!isCameraGranted) {
       isCameraGranted =
@@ -143,7 +231,7 @@ class _HomeState extends State<Home> {
     setState(() {
       _imagePath = imagePath;
     });
-  }
+  }*/
 
   Future<File> processImage(XFile imageFile) async {
     final rawImage = await imageFile.readAsBytes();
@@ -158,5 +246,3 @@ class _HomeState extends State<Home> {
     }
   }
 }
-
-

@@ -16,7 +16,7 @@ import 'package:project/camera_page2.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const MaterialApp(
-    home: Home(),
+    home: LoginPage(),
   ));
 }
 

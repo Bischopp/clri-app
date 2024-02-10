@@ -2,22 +2,32 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:edge_detection/edge_detection.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:gallery_saver/gallery_saver.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:image/image.dart' as img;
-import 'package:path/path.dart';
 import 'package:camera/camera.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:project/navbar.dart';
 import 'package:project/camera_page.dart';
+import 'package:project/camera_page2.dart';
 
-void main() {
+/*Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  //await configureAmplify();
   runApp(const MaterialApp(
     home: Home(),
   ));
-}
+}*/
+
+/*Future<void> configureAmplify() async {
+  // Add your Amplify configuration here (e.g., Auth, API, Storage, etc.)
+  try {
+    await Amplify.addPlugins([AmplifyAuthCognito()]);
+    await Amplify.configure(amplifyconfig);
+    print('Amplify initialized successfully');
+  } catch (e) {
+    print('Failed to initialize Amplify: $e');
+  }
+}*/
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -33,6 +43,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: NavBar(),
       appBar: AppBar(
         title: const Text('Capturing Images'),
         centerTitle: true,
@@ -89,18 +100,19 @@ class _HomeState extends State<Home> {
     if (permissionStatus) {
       final camera = await availableCameras();
       final firstCamera = camera.first;
-      var file = await Navigator.push(
+      /*var file =*/
+      await Navigator.push(
         this.context,
         MaterialPageRoute(
           builder: (context) => CameraPage(camera: firstCamera),
         ),
       );
-      if (file != null) {
+      /*if (file != null) {
         setState(() {
           imageFile = File(file.path);
         });
-      }
-      if (imageFile2 != null && imageFile != null) {
+      }*/
+      /*if (imageFile2 != null && imageFile != null) {
         try {
           // Save the first image (_imagePath) to gallery
           await GallerySaver.saveImage(imageFile2!.path, albumName: "cross");
@@ -121,7 +133,7 @@ class _HomeState extends State<Home> {
         }
       } else {
         print('One or both images are null. Cannot save to gallery.');
-      }
+      }*/
     } else {
       print('Camera permission denied');
     }
@@ -130,8 +142,17 @@ class _HomeState extends State<Home> {
   Future<void> getImage2({required ImageSource source}) async {
     final permissionStatus = true;
     if (permissionStatus) {
-      var file = await ImagePicker().pickImage(source: source);
-      if (file != null) {
+      final camera = await availableCameras();
+      final firstCamera = camera.first;
+
+      /*var file = */
+      await Navigator.push(
+        this.context,
+        MaterialPageRoute(
+          builder: (context) => CameraPage2(camera: firstCamera),
+        ),
+      );
+      /*if (file != null) {
         setState(() {
           imageFile2 = File(file.path);
         });
@@ -157,7 +178,7 @@ class _HomeState extends State<Home> {
         }
       } else {
         print('One or both images are null. Cannot save to gallery.');
-      }
+      }*/
     } else {
       print('Camera permission denied');
     }

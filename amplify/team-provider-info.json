@@ -1,0 +1,36 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-clriapp-dev-0d68b-authRole",
+      "UnauthRoleArn": "arn:aws:iam::905418002872:role/amplify-clriapp-dev-0d68b-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::905418002872:role/amplify-clriapp-dev-0d68b-authRole",
+      "Region": "ap-south-1",
+      "DeploymentBucketName": "amplify-clriapp-dev-0d68b-deployment",
+      "UnauthRoleName": "amplify-clriapp-dev-0d68b-unauthRole",
+      "StackName": "amplify-clriapp-dev-0d68b",
+      "StackId": "arn:aws:cloudformation:ap-south-1:905418002872:stack/amplify-clriapp-dev-0d68b/c2362300-f003-11ee-8fd9-029db7b07d7b",
+      "AmplifyAppId": "djiva2hzqc4bb",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-clriapp-dev-0d68b-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
+    },
+    "categories": {
+      "auth": {
+        "clriapp6be52dd0": {},
+        "userPoolGroups": {}
+      },
+      "function": {
+        "clriapp6be52dd0PostConfirmation": {
+          "GROUP": "user",
+          "deploymentBucketName": "amplify-clriapp-dev-0d68b-deployment",
+          "s3Key": "amplify-builds/clriapp6be52dd0PostConfirmation-663955473637496f4130-build.zip"
+        },
+        "AdminQueries188471e7": {
+          "deploymentBucketName": "amplify-clriapp-dev-0d68b-deployment",
+          "s3Key": "amplify-builds/AdminQueries188471e7-466e5a5a6f744d6e7a65-build.zip"
+        }
+      },
+      "api": {
+        "AdminQueries": {}
+      }
+    }
+  }
+}

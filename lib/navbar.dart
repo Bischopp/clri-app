@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'homepage.dart';
 import 'test_page.dart';
+import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 
 class NavBar extends StatelessWidget {
   @override
@@ -36,7 +38,7 @@ class NavBar extends StatelessWidget {
         ),
         ListTile(
           title: Text('Sign Out'),
-          onTap: () => null,
+          onTap: () => Amplify.Auth.signOut(),
         ),
       ],
     ));

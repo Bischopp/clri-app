@@ -1,5 +1,33 @@
 {
   "api": {
+    "AdminQ": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "AdminQueries188471e7"
+        },
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "clriapp6be52dd0"
+        },
+        {
+          "attributes": [
+            "adminGroupRole"
+          ],
+          "category": "auth",
+          "resourceName": "userPoolGroups"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    },
     "AdminQueries": {
       "authorizationType": "AMAZON_COGNITO_USER_POOLS",
       "dependsOn": [

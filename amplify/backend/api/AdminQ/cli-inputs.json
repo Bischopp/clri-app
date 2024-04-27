@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "paths": {
+    "/queries": {
+      "name": "/queries",
+      "lambdaFunction": "AdminQueries188471e7",
+      "permissions": {
+        "groups": {
+          "admin": [
+            "create",
+            "read",
+            "update",
+            "delete"
+          ]
+        },
+        "setting": "private"
+      }
+    }
+  }
+}

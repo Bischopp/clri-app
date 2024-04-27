@@ -39,15 +39,18 @@ dependencies:
   http: ^0.13.3
   intl: ^0.18.1
   google_sign_in: ^6.2.1
-  amplify_flutter: ^1.0.0
+  amplify_flutter: ^1.7.0
   amplify_auth_cognito: ^1.0.0
   amplify_authenticator: ^1.5.5
+  aws_client: ^0.4.2
 
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   camera: ^0.10.5+2
+  jwt_decoder: ^2.0.1
+  amplify_api: ^1.7.0
 
 dev_dependencies:
   flutter_test:

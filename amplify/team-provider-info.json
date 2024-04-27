@@ -21,7 +21,7 @@
         "clriapp6be52dd0PostConfirmation": {
           "GROUP": "user",
           "deploymentBucketName": "amplify-clriapp-dev-0d68b-deployment",
-          "s3Key": "amplify-builds/clriapp6be52dd0PostConfirmation-663955473637496f4130-build.zip"
+          "s3Key": "amplify-builds/clriapp6be52dd0PostConfirmation-6e45746d564b35716179-build.zip"
         },
         "AdminQueries188471e7": {
           "deploymentBucketName": "amplify-clriapp-dev-0d68b-deployment",
@@ -29,7 +29,8 @@
         }
       },
       "api": {
-        "AdminQueries": {}
+        "AdminQueries": {},
+        "AdminQ": {}
       }
     }
   }

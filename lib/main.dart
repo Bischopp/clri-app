@@ -4,7 +4,7 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 
 import 'amplifyconfiguration.dart';
-
+import 'package:amplify_api/amplify_api.dart' ;
 import 'package:project/homepage.dart';
 
 void main() {
@@ -31,8 +31,11 @@ class _LoginState extends State<Login> {
   void _configureAmplify() async {
     try {
       await Amplify.addPlugin(AmplifyAuthCognito());
+      final api = AmplifyAPI();
+      await Amplify.addPlugin(api);
       await Amplify.configure(amplifyconfig);
       print('Successfully configured');
+      print(api);
     } on Exception catch (e) {
       print('Error configuring Amplify: $e');
     }
@@ -71,3 +74,4 @@ class _LoginState extends State<Login> {
     );
   }
 }
+

@@ -53,7 +53,8 @@
     },
     "userPoolGroupList": [
       "admin",
-      "user"
+      "user",
+      "verfiedUser"
     ],
     "serviceName": "Cognito",
     "usernameCaseSensitive": false,

@@ -6,5 +6,9 @@
   {
     "groupName": "user",
     "precedence": 2
+  },
+  {
+    "groupName": "verfiedUser",
+    "precedence": 3
   }
 ]

@@ -1,5 +1,10 @@
 export type AmplifyDependentResourcesAttributes = {
   "api": {
+    "AdminQ": {
+      "ApiId": "string",
+      "ApiName": "string",
+      "RootUrl": "string"
+    },
     "AdminQueries": {
       "ApiId": "string",
       "ApiName": "string",
@@ -19,7 +24,8 @@ export type AmplifyDependentResourcesAttributes = {
     },
     "userPoolGroups": {
       "adminGroupRole": "string",
-      "userGroupRole": "string"
+      "userGroupRole": "string",
+      "verfiedUserGroupRole": "string"
     }
   },
   "function": {

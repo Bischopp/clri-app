@@ -4,6 +4,10 @@ import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:amplify_authenticator/amplify_authenticator.dart';
+import 'package:amplify_authenticator/amplify_authenticator.dart';
+import 'package:project/homepage.dart';
+import 'dart:developer';
 
 
 class UserTablePage extends StatefulWidget {
@@ -12,7 +16,15 @@ class UserTablePage extends StatefulWidget {
 }
 
 class _UserTablePageState extends State<UserTablePage> {
-  List<Map<String, dynamic>> userData = [];
+  List<Map<String, dynamic>> userData = [
+    {'name': 'John Doe', 'email': 'john123@gmail.com'},
+    {'name': 'Jane Smith', 'email': 'jane123@gmail.com'},
+    {'name': 'Alice Johnson', 'email': 'alice132@gmail.com'},
+    {'name': 'Bob Brown', 'email': 'bob344@gmail.com'},
+    {'name': 'Eve Wilson', 'email': 'evewe23442@gmail.com'},
+  ];
+
+
 
   @override
   void initState() {
@@ -20,78 +32,53 @@ class _UserTablePageState extends State<UserTablePage> {
     _fetchUserData();
   }
 
-  Future<dynamic> listUsers(int limit) async {
-    final String apiName = 'AdminQueries';
-    final String path = '/listUsersInGroup';
-    final Map<String, dynamic> queryStringParameters = {
-      "groupname": "Editors",
-      "limit": limit.toString(),
-    };
-    final Map<String, String> headers = {
-      'Content-Type': 'application/json',
-      // 'Authorization': (await fetchAuthSession())['tokens']['accessToken']['payload'],
-    };
-    final Uri uri = Uri.https('<your-api-id>.execute-api.<region>.amazonaws.com', '/<stage>/$path', queryStringParameters);
+  void verifyUser(Map<String, dynamic> user) {
+    // Implement verification logic here
+    print('Verifying user: ${user['name']} (${user['email']})');
+    // You can perform any actions you need here, such as making API calls, updating UI, etc.
+  }
 
-    final http.Response response = await http.get(uri, headers: headers);
-
-    if (response.statusCode == 200) {
-      return json.decode(response.body);
-    } else {
-      throw Exception('Failed to list editors: ${response.reasonPhrase}');
+  Future<JsonWebToken?> getAccessToken() async {
+    try {
+      // final session = await Amplify.Auth.fetchAuthSession();
+      final session = await Amplify.Auth.fetchAuthSession() as CognitoAuthSession;
+      final idToken = session.userPoolTokensResult.value.idToken;
+      return idToken;
+    } catch (e) {
+      print('Error getting access token: $e');
+      return null;
     }
   }
 
-  // Future<Map<String, dynamic>> fetchAuthSession() async {
-  //   // Implement your function to fetch the authentication session
-  //   // This function should return a Map<String, dynamic> containing the tokens
-  //   dynamic session = await Amplify.Auth.fetchAuthSession();
-  //   session = await Amplify.Auth.fetchAuthSession(options: const FetchAuthSessionOptions(forceRefresh: true));
-  //   final result = await Amplify.Auth.fetchAuthSession(
-  //       options: FetchAuthSessionOptions(getAWSCredentials: true));
-  //   final cognitoAuthSession = (result as CognitoAuthSession);
-  //   return cognitoAuthSession.userPoolTokens?.idToken;
-  //
-  // }
   Future<void> _fetchUserData() async {
     try {
-      // Check if the current user is an admin
-
-      // const apiUrl = "https://p9kfas6qo5.execute-api.ap-south-1.amazonaws.com/test/AdminQueries188471e7-dev";
-      // final payload = {
-      //   "methodArn": "arn:aws:execute-api:ap-south-1:905418002872:p9kfas6qo5/*/GET/AdminQueries188471e7-dev",
-      //   "resource": "/listUsers",
-      //   "path": "/listUsers",
-      //   "httpMethod": "GET",
-      //   "queryStringParameters": {
-      //     "cognito:groups": "admin",
-      //   },
-      //
-      // };
-
       const newApi  = 'https://ia4uuqb2pe.execute-api.ap-south-1.amazonaws.com/dev';
       const path = "/queries/listUsers";
       const apiName = "AdminQ";
-      final claims = {
-        "cognito:groups": "admin",
-        "email": "nadkarnivatsal@gmail.com"
-      };
-      final claimsJson = json.encode(claims);
-      final query = {
-        "cognito:groups": "admin",
-        "email": "nadkarnivatsal@gmail.com",
-        // Include claims information as a JSON string
+      // final claims = {
+      //   "cognito:groups": "admin",
+      //   "email": "nadkarnivatsal@gmail.com"
+      // };
+      // final claimsJson = json.encode(claims);
+      // final query = {
+      //   "cognito:groups": "admin",
+      //   "email": "nadkarnivatsal@gmail.com"
+      // };
+      final session = await Amplify.Auth.fetchAuthSession() as CognitoAuthSession;
+      final accessToken = session.userPoolTokensResult.value.accessToken;
+      final accessTokenValue = json.encode(accessToken);
+      // final accessTokenValue = accessToken.toString();
 
-      };
+      log(accessTokenValue);
+
+
       final header = {
-        'claims': claimsJson
+        'authorizationToken': accessTokenValue,
       };
-
-      // final header = {"claims": "" };
       final restOperation = Amplify.API.get(
         path,
-        headers: header,
-        queryParameters: query,
+        headers: (header),
+        // queryParameters: query,
         apiName: apiName,
       );
       final response = await restOperation.response;
@@ -121,9 +108,17 @@ class _UserTablePageState extends State<UserTablePage> {
           return ListTile(
             title: Text(user['name']),
             subtitle: Text(user['email']),
+            trailing: ElevatedButton(
+              onPressed: () {
+                // Handle verify user button press
+                verifyUser(user);
+              },
+              child: Text('Verify User'),
+            ),
           );
         },
       ),
+
     );
   }
 }
